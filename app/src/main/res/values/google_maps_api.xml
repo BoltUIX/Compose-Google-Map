@@ -1,0 +1,4 @@
+<resources>
+    <!--https://developers.google.com/maps/documentation/android-sdk/get-api-key-->
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">Paste-Key-here</string>
+</resources>
