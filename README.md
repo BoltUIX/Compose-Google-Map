@@ -26,3 +26,6 @@ https://www.boltuix.com/2022/11/draw-polylines-on-google-maps-in.html
 https://www.boltuix.com/2022/11/place-marker-on-center-of-screen-on.html
 
 <img src="https://miro.medium.com/max/1400/1*ArNSw16ppJ3YIri-vGeIRQ.webp" alt="Compose">
+
+
+Notes: Don not forgot to change GOOGLE API KEY
