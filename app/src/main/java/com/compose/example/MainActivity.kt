@@ -24,6 +24,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -85,26 +86,36 @@ class MainActivity : ComponentActivity() {
 
                     // 2. Add a markers to your app
                     // * https://www.boltuix.com/2022/11/add-marker-to-google-maps-in-android.html
-                    ComposeMapDemoMarkers()
+                    //ComposeMapDemoMarkers()
 
 
 
-
-                    // ComposeMapPropertiesDemo() // 2. Set properties on a map
-                    // ComposeMapSettingDemo() // 3. Setting on a map
-                    //ComposeMapCustomizingMarker() // 4. Customizing a marker's info window
-                    // ComposeMapControllingCamera() // 5. Controlling a map's camera
-                   //ComposeMapMapMarker() // 6. Customizing a marker icon
-                   // ComposeMapCenterPointMapMarker() // 7. Center point
+                    // 3. Set properties on a map
+                    // https://www.boltuix.com/2022/11/set-properties-on-map-in-android-using.html
+                    //ComposeMapPropertiesDemo()
+                    // 3b. Controlling a map's camera
+                   //ComposeMapControllingCamera()
 
 
-                   // GoogleMapClustering()
 
-                    //https://www.geeksforgeeks.org/how-to-draw-track-on-google-maps-in-android-using-jetpack-compose/
-                    //ComposeMapDrawTrack() // no api key required //to Draw Track on Google Maps
+                    // 4. Customizing a marker icon
+                    //https://www.boltuix.com/2022/11/add-custom-marker-to-google-maps-in.html
+                    // ComposeMapMapMarker()
+
+                    // 5. Customizing a marker's info window
+                    //https://www.boltuix.com/2022/11/custom-info-window-on-map-marker-clicks.html
+                  // ComposeMapCustomizingMarker()
 
 
-                    //  ComposeMapMapPolyline()
+                    //6. https://www.boltuix.com/2022/11/draw-polylines-on-google-maps-in.html
+                    // ComposeMapMapPolyline()
+                    // https://www.boltuix.com/2022/11/draw-polylines-on-google-maps-in.html
+                    // ComposeMapDrawTrack() // no api key required //to Draw Track on Google Maps
+
+
+                    // 7. Center point
+                    ComposeMapCenterPointMapMarker()
+
 
                 }
             }
@@ -149,9 +160,9 @@ fun ComposeMapDemoMarkers() {
         Marker(
             state = rememberMarkerState(position = singapore),
             draggable = true,
-            title = "Marker1",
+            title = "Marker 1",
             snippet = "Marker in Singapore",
-            icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)
+            icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)
         )
     }
 }
@@ -163,30 +174,33 @@ fun ComposeMapDemoMarkers() {
 
 @Composable
 fun ComposeMapPropertiesDemo() {
-    var properties by remember {
+    var uiSettings by remember { mutableStateOf(MapUiSettings()) }
+    val properties by remember {
         mutableStateOf(MapProperties(mapType = MapType.NORMAL))
-        // mutableStateOf(MapProperties(mapType = MapType.TERRAIN))
-        // mutableStateOf(MapProperties(mapType = MapType.HYBRID))
-        // mutableStateOf(MapProperties(mapType = MapType.SATELLITE))
     }
 
-    GoogleMap(
-        modifier = Modifier.fillMaxSize(),
-        properties = properties,
-    )
+    Box(Modifier.fillMaxSize()) {
+        GoogleMap(
+            modifier = Modifier.matchParentSize(),
+            properties = properties,
+            uiSettings = uiSettings
+        )
+        Switch(
+            checked = uiSettings.zoomControlsEnabled,
+            onCheckedChange = {
+                uiSettings = uiSettings.copy(zoomControlsEnabled = it)
+            }
+        )
+    }
 }
-
-
 @Composable
-fun ComposeMapSettingDemo() {
+fun ComposeMapPropertiesDemo2() {
     var uiSettings by remember { mutableStateOf(MapUiSettings()) }
-    val properties by remember { mutableStateOf(MapProperties(mapType = MapType.NORMAL)) }
+    val properties by remember { mutableStateOf(MapProperties(mapType = MapType.SATELLITE)) }
 
     Box(Modifier.fillMaxSize()) {
 
-        uiSettings = uiSettings.copy(
-            compassEnabled = true
-        )
+        uiSettings = uiSettings.copy(zoomControlsEnabled = false)
 
         GoogleMap(
             modifier = Modifier.matchParentSize(),
@@ -198,33 +212,38 @@ fun ComposeMapSettingDemo() {
 
 
 
-
 /*
 * Customizing a marker's info window
 You can customize a marker's info window contents by using the MarkerInfoWindowContent element, or if you want to customize the entire info window, use the MarkerInfoWindow element instead. Both of these elements accept a content parameter to provide your customization in a composable lambda expression.*/
 @Composable
-fun ComposeMapCustomizingMarker() {
+fun ComposeDemoApp3() {
+
+
     val london = LatLng(51.52061810406676, -0.12635325270312533)
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(london, 10f)
     }
-
     Box(Modifier.fillMaxSize()) {
         GoogleMap(
             modifier = Modifier.matchParentSize(),
-            cameraPositionState = cameraPositionState
-        ){
+            cameraPositionState = cameraPositionState,
+            ){
+            val icon = bitmapDescriptorFromVector(
+                LocalContext.current, R.drawable.pin
+            )
             MarkerInfoWindow(
                 state = MarkerState(position = london),
-            ) {
+                icon = icon,
+            ) { marker ->
                 Box(
                     modifier = Modifier
                         .background(
                             color = MaterialTheme.colorScheme.onPrimary,
                             shape = RoundedCornerShape(35.dp, 35.dp, 35.dp, 35.dp)
                         )
-                        .align(Alignment.BottomCenter),
+                    ,
                 ) {
+
 
                     Image(
                         painter = painterResource(id = R.drawable.map),
@@ -269,11 +288,91 @@ fun ComposeMapCustomizingMarker() {
                         Spacer(modifier = Modifier.height(24.dp))
 
                     }
+
                 }
+
             }
         }
+    }}
+
+/*
+* Customizing a marker's info window
+You can customize a marker's info window contents by using the MarkerInfoWindowContent element, or if you want to customize the entire info window, use the MarkerInfoWindow element instead. Both of these elements accept a content parameter to provide your customization in a composable lambda expression.*/
+@Composable
+fun ComposeMapCustomizingMarker() {
+    val london = LatLng(51.52061810406676, -0.12635325270312533)
+    val cameraPositionState = rememberCameraPositionState {
+        position = CameraPosition.fromLatLngZoom(london, 10f)
     }
-}
+    Box(Modifier.fillMaxSize()) {
+        GoogleMap(
+            modifier = Modifier.matchParentSize(),
+            cameraPositionState = cameraPositionState,
+        ){
+            val icon = bitmapDescriptorFromVector(
+                LocalContext.current, R.drawable.pin
+            )
+            MarkerInfoWindow(
+                state = MarkerState(position = london),
+                icon = icon,
+            ) { marker ->
+                Box(
+                    modifier = Modifier
+                        .background(
+                            color = MaterialTheme.colorScheme.onPrimary,
+                            shape = RoundedCornerShape(35.dp, 35.dp, 35.dp, 35.dp)
+                        )
+                    ,
+                ) {
+
+
+                    Column(
+                        modifier = Modifier.padding(16.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+
+                        Image(
+                            painter = painterResource(id = R.drawable.map),
+                            contentDescription = null,
+                            contentScale = ContentScale.Fit,
+                            modifier = Modifier
+                                .height(80.dp)
+                                .fillMaxWidth(),
+
+                            )
+                        //.........................Spacer
+                        Spacer(modifier = Modifier.height(24.dp))
+                        //.........................Text: title
+                        Text(
+                            text = "Marker Title",
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier
+                                .padding(top = 10.dp)
+                                .fillMaxWidth(),
+                            style = MaterialTheme.typography.headlineSmall,
+                            color = MaterialTheme.colorScheme.primary,
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        //.........................Text : description
+                        Text(
+                            text = "Customizing a marker's info window",
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier
+                                .padding(top = 10.dp, start = 25.dp, end = 25.dp)
+                                .fillMaxWidth(),
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = MaterialTheme.colorScheme.primary,
+                        )
+                        //.........................Spacer
+                        Spacer(modifier = Modifier.height(24.dp))
+
+                    }
+
+                }
+
+            }
+        }
+    }}
 
 //Controlling a map's camera
 @Composable
@@ -284,7 +383,6 @@ fun ComposeMapControllingCamera() {
     }
     Box(Modifier.fillMaxSize()) {
         GoogleMap(cameraPositionState = cameraPositionState){
-
         }
         Button(onClick = {
             // Move the camera to a new zoom level
@@ -300,18 +398,16 @@ fun ComposeMapControllingCamera() {
 @Composable
 fun ComposeMapMapMarker() {
     val singapore = LatLng(1.35, 103.87)
+    val singapore2 = LatLng(2.50, 103.87)
+
     val cameraPositionState: CameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(singapore, 11f)
     }
     Box(Modifier.fillMaxSize()) {
         GoogleMap(cameraPositionState = cameraPositionState){
-            //https://towardsdev.com/jetpack-compose-custom-google-map-marker-erselan-khan-e6e04178a30b
-
-
-
             MapMarker(
                 position = singapore,
-                title = "Your Title",
+                title = "Your Title 1",
                 context = LocalContext.current,
                 iconResourceId = R.drawable.pin
             )
@@ -321,8 +417,6 @@ fun ComposeMapMapMarker() {
                 context = LocalContext.current,
                 iconResourceId = R.drawable.pin
             )
-
-
         }
     }
 }
@@ -374,29 +468,26 @@ fun ComposeMapCenterPointMapMarker() {
         modifier = Modifier.fillMaxSize(),
         cameraPositionState = cameraPositionState
     )
-
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        IconButton(
-            onClick = {
-
-            },
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.pin2),
-                contentDescription = "marker",
+            IconButton(
+                onClick = {
+                },
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.pin2),
+                    contentDescription = "marker",
+                )
+            }
+            Text(text = "Is camera moving: ${cameraPositionState.isMoving}" +
+                    "\n Latitude and Longitude: ${cameraPositionState.position.target.latitude} " +
+                    "and ${cameraPositionState.position.target.longitude}",
+                textAlign = TextAlign.Center
             )
         }
-
-        Text(text = "Is camera moving: ${cameraPositionState.isMoving}" +
-                "\n Latitude and Longitude: ${cameraPositionState.position.target.latitude} " +
-                "and ${cameraPositionState.position.target.longitude}",
-            textAlign = TextAlign.Center
-        )
-    }
 }
 
 //.............................................................................
@@ -405,16 +496,14 @@ fun ComposeMapCenterPointMapMarker() {
 @Composable
 fun ComposeMapDrawTrack() {
     val context = LocalContext.current
-
     Box(Modifier.fillMaxSize()) {
         Button(onClick = {
+            //source location to the destination location
             drawTrack("Louisville", "old louisville", context)
         }) {
             Text(text = "Google map Draw Track")
         }
-
     }
-
 }
 
 private fun drawTrack(source: String, destination: String, context: Context) {
@@ -452,7 +541,6 @@ fun ComposeMapMapPolyline() {
     }
     Box(Modifier.fillMaxSize()) {
         GoogleMap(cameraPositionState = cameraPositionState){
-
             MapMarker(
                 position = singapore,
                 title = "Your Title",
