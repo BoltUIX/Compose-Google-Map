@@ -4,6 +4,12 @@ A Jetpack Compose library for integrating and customizing **Google Maps** in And
 
 ![Google Maps in Jetpack Compose](https://miro.medium.com/max/1400/1*ArNSw16ppJ3YIri-vGeIRQ.webp)
 
+
+
+[![Watch the playlist](https://github.com/user-attachments/assets/508bc620-3eb5-4321-98fa-685235e4866e)](https://www.youtube.com/playlist?list=PLEpOsyzAgs48RxAcw6QEdqFVZCrXU5ZuC)
+
+
+
 ## Features ✨
 
 - **Basic Map Integration** 🗺️: Display a Google Map centered at a specific location (e.g., Singapore).
