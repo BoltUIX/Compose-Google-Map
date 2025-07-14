@@ -130,17 +130,17 @@ fun ComposeMapMapPolyline() {
 
 ## Feature Comparison Table 📊
 
-| Feature                  | Description                                      | Pros                              | Cons                              | Rank |
-|--------------------------|--------------------------------------------------|-----------------------------------|-----------------------------------|------|
-| Basic Map                | Simple map with a marker                         | Easy to implement                | Limited customization             | 5    |
-| Draggable Marker         | Marker that can be moved                         | Interactive                      | Basic appearance                  | 4    |
-| Custom Marker Icon       | Custom vector drawable for markers               | Visually appealing               | Requires drawable resources       | 3    |
-| Custom Info Window       | Styled info window with images/text              | Highly customizable              | Complex composable structure      | 2    |
-| Polylines                | Draw routes between coordinates                  | Useful for navigation            | Limited styling options           | 3    |
-| Camera Control           | Programmatic zoom/position control               | Dynamic user experience          | Requires additional logic         | 4    |
-| Centered Marker          | Marker fixed at screen center                    | Clear focus on location          | Limited interactivity             | 4    |
-| External Navigation      | Opens Google Maps app for routes                 | Seamless integration             | Requires Google Maps app          | 3    |
-| Advanced Map (Circle, UI)| Combines markers, circles, and controls          | Feature-rich                     | Complex implementation            | 1    |
+| Feature                  | Description                                      | Pros                              | Cons                           |
+|--------------------------|--------------------------------------------------|-----------------------------------|-------------------------------- |
+| Basic Map                | Simple map with a marker                         | Easy to implement                | Limited customization            |
+| Draggable Marker         | Marker that can be moved                         | Interactive                      | Basic appearance                 |
+| Custom Marker Icon       | Custom vector drawable for markers               | Visually appealing               | Requires drawable resources      |
+| Custom Info Window       | Styled info window with images/text              | Highly customizable              | Complex composable structure     |
+| Polylines                | Draw routes between coordinates                  | Useful for navigation            | Limited styling options          |
+| Camera Control           | Programmatic zoom/position control               | Dynamic user experience          | Requires additional logic        |
+| Centered Marker          | Marker fixed at screen center                    | Clear focus on location          | Limited interactivity            |
+| External Navigation      | Opens Google Maps app for routes                 | Seamless integration             | Requires Google Maps app         |
+| Advanced Map (Circle, UI)| Combines markers, circles, and controls          | Feature-rich                     | Complex implementation           |
 
 ## References 📖
 
